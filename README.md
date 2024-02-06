@@ -1,6 +1,6 @@
 ### Hi there 👋
 I've just started to learn python(since 01.12.24) so still on basic steps👶
-I feel excited of learning something new (so far) 
+
 
 **thunthuni/thunthuni** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
