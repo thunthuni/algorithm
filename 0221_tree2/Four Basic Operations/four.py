@@ -9,68 +9,49 @@
 import sys
 sys.stdin = open('input.txt')
 
-def postorder_traverse(T):# 인자는 인덱스
-    if T < N + 1:
-        postorder_traverse(2 * T)
-        postorder_traverse(2 * T + 1)
-        save.append(lst[T])
+# def postorder_traverse(T):# 인자는 인덱스
+#     if T < N + 1:
+#         postorder_traverse(2 * T)
+#         postorder_traverse(2 * T + 1)
+#         save.append(lst[T])
 
 T = 10
 for tc in range(1, T+1):
     N = int(input()) # 8 = 정점의 개수
     lst = [0]# 인덱스 정점번호랑 일치시키기
-    save = []
+    left = [0] * (N+1)
+    right = [0] * (N+1)
+    par = [0] * (N+1)
     for i in range(N):
-        arr = list(input().split())  # 노드 번호, 글자, 왼쪽자식, 오른쪽 자식
-        lst.append(arr[1])
-    # print(word_lst)
-    # print(f'#{tc}', end=' ')
-    postorder_traverse(1)
-    print()
+        arr = list(input().split())  # 노드 번호, 노드값, 왼쪽자식, 오른쪽 자식
+        if len(arr) == 4:
+            left[i + 1] = arr[2]
+            right[i + 1] = arr[3]
 
-    stack = []
-    postfix = ''
-    # 연산자 우선순위 설정
-    icp = {'*': 2, '/': 2, '+': 1, '-': 1}
+    print(left)
+    print(right)
+    # postorder_traverse(1)
+    # print()
+    # print(save)
 
-    for i in save:
-        if i in '*/+-':
-            if len(stack) == 0:
-                stack.append(i)
-            elif len(stack) != 0:
-                if icp[i] >= icp[stack[len(stack) - 1]]:
-                    stack.append(i)
-                elif icp[i] < icp[stack[len(stack) - 1]]:
-                    # 빈 리스트는 암시적 판단으로 False로 판단된다.
-                    # 스택이 비어있다면 단축평가로 인해 뒤쪽 조건을 확인하지 않는다.
-                    while stack and icp[i] <= icp[stack[len(stack) - 1]]:
-                        # 반복문과 pop 을 같이 사용할 때 인덱스 에러가 날 수 있다. 그러므로 조건문을 잘 설정해야 한다.
-                        a = stack.pop()
-                        postfix += a
-                    stack.append(i)
-        else:
-            postfix += i
-    while len(stack) != 0:  # 그냥 len(stack) 도 가능
-        postfix += stack.pop()
-
-    num_stack = []
-    for j in postfix:
-        if j not in '+*/-':
-            num_stack.append(int(j))
-        elif j == '+':
-            a = num_stack.pop()
-            b = num_stack.pop()
-            num_stack.append(a + b)
-        elif j == '*':
-            a = num_stack.pop()
-            b = num_stack.pop()
-            num_stack.append(a * b)
-        elif j == '/':
-            a = num_stack.pop()
-            b = num_stack.pop()
-            num_stack.append(a / b)
-        elif j == '-':
-            a = num_stack.pop()
-            b = num_stack.pop()
-            num_stack.append(a - b)
-    print(f'#{tc} {num_stack.pop()}')
+    # num_stack = []
+    # for j in save:
+    #     if j not in '+*/-':
+    #         num_stack.append(int(j))
+    #     elif j == '+':
+    #         a = num_stack.pop()
+    #         b = num_stack.pop()
+    #         num_stack.append(a + b)
+    #     elif j == '*':
+    #         a = num_stack.pop()
+    #         b = num_stack.pop()
+    #         num_stack.append(a * b)
+    #     elif j == '/':
+    #         a = num_stack.pop()
+    #         b = num_stack.pop()
+    #         num_stack.append(b // a)
+    #     elif j == '-':
+    #         a = num_stack.pop()
+    #         b = num_stack.pop()
+    #         num_stack.append(b - a)
+    # print(f'#{tc} {num_stack.pop()}')
