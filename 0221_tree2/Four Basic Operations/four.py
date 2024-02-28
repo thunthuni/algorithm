@@ -22,11 +22,16 @@ for tc in range(1, T+1):
     left = [0] * (N+1)
     right = [0] * (N+1)
     par = [0] * (N+1)
+
     for i in range(N):
         arr = list(input().split())  # 노드 번호, 노드값, 왼쪽자식, 오른쪽 자식
-        if len(arr) == 4:
-            left[i + 1] = arr[2]
-            right[i + 1] = arr[3]
+        # for j in range(N+1):
+            p, c = arr[0], arr[i * 2 + 1]
+            if left[p] == 0:
+                left[p] = c
+            else:
+                right[p] = c
+            par[c] = p
 
     print(left)
     print(right)
