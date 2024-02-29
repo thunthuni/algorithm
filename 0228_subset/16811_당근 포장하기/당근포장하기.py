@@ -22,7 +22,8 @@ T = int(input())
 for tc in range(1, T+1):
     N = int(input())
     carrots = list(map(int, input().split()))
-    counts = [0] * (max(carrots) + 1)  # 제일 큰 정수 크기 + 1만큼
+    carrots.sort()
+    # counts = [0] * (max(carrots) + 1)  # 제일 큰 정수 크기 + 1만큼   ## 0 이 아닐때를 고려해야됨
     len_box1 = 0
     len_box2 = 0
     len_box3 = 0
@@ -34,16 +35,23 @@ for tc in range(1, T+1):
             # print(f'#{tc} {-1}')
             result = -1
             break
+    # 그리디 보다 완전탐색
+    # if result != -1:
+    #     for b in counts:
+    #         if b != 0:
+    #             if len_box1 < N//2 - 1:
+    #                 len_box1 += b
+    #             elif len_box2 < N//2 - 1:
+    #                 len_box2 += b
+    #             elif len_box3 < N//2 - 1:
+    #                 len_box3 += b
+    #     result = max(len_box1, len_box2, len_box3) - min(len_box1, len_box2, len_box3)
+    # for s in range(N-2):
 
     if result != -1:
-        for b in counts:
-            if b != 0:
-                if len_box1 < N//2 - 1:
-                    len_box1 += b
-                elif len_box2 < N//2 - 1:
-                    len_box2 += b
-                elif len_box3 < N//2 - 1:
-                    len_box3 += b
-        result = max(len_box1, len_box2, len_box3) - min(len_box1, len_box2, len_box3)
+        for s in range(N-2):
+            len_box1 += counts[s]
+
+
 
     print(f'#{tc}', result)
