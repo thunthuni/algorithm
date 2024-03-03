@@ -1,55 +1,62 @@
 import sys
 sys.stdin = open('input.txt')
 
-N = 25
-numbers = int(input())
-bingo = (int(input()) for _ in range(N))
-print(bingo)
+arr = [list(map(int, input().split())) for _ in range(5)]
+num_lst = []
+for tc in range(5):
+    lst = list(map(int, input().split()))
+    for x in lst:
+        num_lst.append(x)  # 사회자가 부르는 수의 인덱스를 쉽게 알기 위해서 1차원 리스트 사용
 
-# 1부터 25 자연수
-# numbers에 있는 수를 순서대로 지워나간다
-# 지워진 수가 가로줄,세로줄,대각선인 경우 줄이 그어진다
-# 이렇게 지워진 줄이 3개 이상일 경우 빙고이다
-# 구하려고 하는 것은 사회자가 '몇번째' 수를 부를 때 빙고를 외치게 되는 것인지
+# 대각선 리스트 만들기
+ld_lst = []
+rd_lst = []
+for i in range(5):
+    rd_lst.append(arr[i][i])
+    ld_lst.append(arr[i][5 - 1 - i])
 
-# 흠 어떻게 풀면 좋을까
-# 일단 숫자를 부르면 하나씩 x 로 바꿔
-# X 의 수가 12개 이상일때부터 체크 들어가
-# 가로줄, 세로줄, 대각선줄 중에 x 로만 채워진 리스트가 있는지 체크해
-x_list = ['x'] * 5
-# 세로줄 리스트 만들기
-for col in range(N):
-    col_list = []
-    for row in range(N):
-        col_list.append(bingo[row][col])
-    result1 = ''.join(col_list)
+# x_cnt = 0  # 뒤에 반복문을 덜 돌리기 위한 조건
+bingo_cnt = 0  # 총 빙고를 외치는 수
+row_cnt = [0] * 5  # 가로에서 지워지는 x 개수 저장소
+col_cnt = [0] * 5   # 세로에서 지워지는 x 개수 저장소
+left_diag = 0  # 왼쪽
+right_diag = 0
 
-right_diagonal = []
-left_diagonal = []
-for i in range(25):
-    right_diagonal.append(bingo[i][i])
-    left_diagonal.append(bingo[i][24-i])
+# while bingo_cnt < 3:
+# if bingo_cnt < 3:
+for idx in range(25):  # 사회자가 부르는 수
+    for row in range(5):
+        for col in range(5):
+            if arr[row][col] == num_lst[idx]:
+                # x_cnt += 1
+                row_cnt[row] += 1
+                col_cnt[col] += 1
+                if arr[row][col] in ld_lst:
+                    left_diag += 1
+                    if left_diag == 5:
+                        bingo_cnt += 1
+                if arr[row][col] in rd_lst:
+                    right_diag += 1
+                    if right_diag == 5:
+                        bingo_cnt += 1
+                if row_cnt[row] == 5:
+                    bingo_cnt += 1
+                if col_cnt[col] == 5:
+                    bingo_cnt += 1
+
+    if bingo_cnt >= 3:
+        print(idx+1)
+        break
 
 
-# 부른 숫자를 X 로 바꾸기
-count_x = 0
-count_b = 0
-for idx in range(len(numbers)):
-    for idx_v in range(25):
-        if numbers[idx] == bingo[idx_v]:
-            bingo[idx_v] = 'x'
-            count_x += 1
-if count_x >= 12:
-    for row in range(25):
-        if bingo[row] == x_list:
-            count_b += 1
-    for col in range(25):
-        if result1[col] == x_list:
-            count_b += 1
-    if right_diagonal == x_list:
-        count_b += 1
-    if left_diagonal == x_list:
-        count_b += 1
 
-if count_b >= 3:
-    print()
+
+
+
+
+
+
+
+
+
+
