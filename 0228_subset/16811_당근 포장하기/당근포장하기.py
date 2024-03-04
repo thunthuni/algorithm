@@ -8,7 +8,7 @@ sys.stdin = open('input.txt')
 # 4) 한 상자에 N/2 개(소수점이면 내림) 를 초과하는 당근이 있어서도 안된다
 # 5) 1~3 조건을 만족하면서 각 상자에 든 당근의 개수 차가 최소가 되도록 해야한다.
 # 마지막 출력값: 각 상자에 든 당근의 개수 차
-    # 포장할 수 없는 경우 즉, 조건을 다 만족할 수 업는 경우 -1
+    # 포장할 수 없는 경우 즉, 조건을 다 만족할 수 없는 경우 -1
 
 
 # 예시 분석)
@@ -24,34 +24,36 @@ for tc in range(1, T+1):
     carrots = list(map(int, input().split()))
     carrots.sort()
     # counts = [0] * (max(carrots) + 1)  # 제일 큰 정수 크기 + 1만큼   ## 0 이 아닐때를 고려해야됨
-    len_box1 = 0
-    len_box2 = 0
-    len_box3 = 0
-    result = 0
-    for num in carrots:
-        counts[num] += 1
-    for a in counts:
-        if a > N//2:   # 4번째 조건
-            # print(f'#{tc} {-1}')
-            result = -1
+    min_value = N
+
+    small = 0
+    for s in range(N-2):
+        small += 1
+        if carrots[s] == carrots[s+1]:
+            continue
+        if small > N//2:
             break
-    # 그리디 보다 완전탐색
-    # if result != -1:
-    #     for b in counts:
-    #         if b != 0:
-    #             if len_box1 < N//2 - 1:
-    #                 len_box1 += b
-    #             elif len_box2 < N//2 - 1:
-    #                 len_box2 += b
-    #             elif len_box3 < N//2 - 1:
-    #                 len_box3 += b
-    #     result = max(len_box1, len_box2, len_box3) - min(len_box1, len_box2, len_box3)
-    # for s in range(N-2):
 
-    if result != -1:
-        for s in range(N-2):
-            len_box1 += counts[s]
+        medium = 0
+        for m in range(s+1, N-1):
+            medium += 1
+            if carrots[m] == carrots[m+1]:
+                continue
+            if medium > N//2:
+                break
 
+            # large = 0
+            large = len(carrots[m+1:])
+            if large > N//2:
+                continue
 
+            temp_max = max(small, medium, large)
+            temp_min = min(small, medium, large)
+            temp = temp_max - temp_min
 
-    print(f'#{tc}', result)
+            if min_value > temp:
+                min_value = temp
+
+    if min_value == N:
+        min_value = -1
+    print(f'#{tc} {min_value}')
